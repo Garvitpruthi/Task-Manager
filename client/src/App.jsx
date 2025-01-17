@@ -1,19 +1,37 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import TaskDetails from "./pages/TaskDetails";
 import Tasks from "./pages/Tasks";
 import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Login from "./pages/login";
+import { Toaster } from "sonner";
 
 
 function Layout() {
-  return (
-    <div>
-      {/* Any common layout elements like headers, footers can be added here */}
-      <Outlet />
-    </div>
-  );
+    const user = "";
+
+    const location = useLocation();
+
+    return user ? (
+      <div className="w-full h-screen flex flex-col md:flex-row">
+        <div className="w-1/5 h-screen bg-white sticky top-0 hidden md:block">
+          {/* <Sidebar /> */}
+        </div>
+
+        {/* <MobileSidebar /> */}
+
+        <div className="flex-1 overflow-y-auto">
+          {/* <NavBar /> */}
+
+          <div className="p-4 2xl:px-10">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    ) : (
+      <Navigate to='/log-in' state={{ from : location }} replace/>
+    )
 }
 
 function App() {
@@ -34,6 +52,7 @@ function App() {
 
         <Route path='/log-in' element={<Login />} />
       </Routes>
+      <Toaster richColors />
     </main>
   )
 }
